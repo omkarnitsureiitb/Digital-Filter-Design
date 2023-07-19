@@ -1,0 +1,420 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[hidelinks]{hyperref}
+\usepackage[a4paper]{geometry}
+\usepackage{amssymb}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{fancyhdr}
+\usepackage{floatrow}
+\graphicspath{{./}}
+\usepackage{booktabs,makecell}
+\usepackage{titlesec}
+
+\titleformat*{\section}{\LARGE\bfseries}
+\titleformat*{\subsection}{\Large\bfseries}
+
+\pagestyle{fancy}
+
+\lhead{\leftmark}
+\rhead{Page \thepage}
+\cfoot{Butterworth Bandstop Filter}
+\renewcommand{\footrulewidth}{1pt}
+
+\begin{document}
+
+\begin{titlepage}
+\begin{center}
+    \vspace*{\fill}
+\includegraphics[scale=0.6]{iitb_logo.jpg}\\
+[4 cm]
+    \rule{12.5cm}{0.75mm}\\
+    \huge{\bfseries Filter Design Assignment-I}
+    \rule{12.5cm}{0.75mm}\\
+    [0.5cm]
+   {\textbf {EE338 - 2023 \\
+    Filter Review Report}}\\
+    [2.5cm]
+\end{center}
+\begin{flushleft}
+   {\huge
+    Name:- Omkar Nitsure \\
+    Roll Number:- 210070057 \\
+     \\}
+    \end{flushleft}
+\end{titlepage}
+\tableofcontents
+% \thispagestyle{empty}
+% \clearpage
+% \pagenumbering{arabic}
+
+
+% \title{\Huge{Filter Design Report}\\Digital Signal Processing\\EE338}
+% \author{\huge{Omkar Nitsure\\Roll no - 210070057}}
+% \date{25th February 2023}
+
+% \begin{document}
+
+% {\maketitle
+
+\pagestyle{fancy}
+%... then configure it.
+\fancyhead{} % clear all header fields
+\fancyhead[L]{\textbf{Filter Design(Bandstop)}}
+\fancyhead[R]{\textbf{Omkar Nitsure(210070057)}}
+\fancyfoot{} % clear all footer fields
+\fancyfoot[C]{\thepage}
+\newpage
+\section{Student Details:-}
+\textbf{Name}:- Omkar Nitsure\\
+\textbf{Roll no}:- 210070057\\
+\textbf{Filter Number}:- 107\\
+
+\section{Butterworth Bandstop Filter}
+\subsection{Discrete Time Filter Specifications}
+
+Filter Number Assigned = \textbf{107}\\
+As Filter number $>$ 80, we get the modified $\textbf{m} = 107 - 80 = \textbf{27}$\\
+$q(m) =$ greatest integer strictly less than 0.1m
+Thus for $m = 27$, we get $\textbf{q(m) = 2}$\\
+$\textbf{r(m)} = m - 10q(m) = 27 - 10(2) = \textbf{7}$\\
+$\textbf{BL(m)} = 20 + 3q(m) + 11r(m) = 10 + 5(2) + 13(7) = \textbf{103}$\\
+$\textbf{BH(m)} = BL(m) + 40 = 103 + 40 = \textbf{143}$\\
+\par
+
+\noindent So the Specifications of the \textbf{Bandstop Filter} to be designed are as follows:-
+
+\begin{itemize}
+    \item \textbf{Sampling Frequency} = 425 kHz
+    \item \textbf{Stopband} = 103 kHz to 143 kHz
+    \item \textbf{Transition band} = 5 kHz on either side of passband
+    \item \textbf{Passband} = 0-98 kHz and 148-212.5 kHz
+    \item \textbf{Tolerance} = 0.15 for both passband and stopband
+    \item \textbf{Passband Nature} = Monotonic
+    \item \textbf{Stopband Nature} = Monotonic
+\end{itemize}
+\newpage
+
+\subsection{Normalized Digital Filter Specifications}
+The above frequency response can be normalized in a range of $-\pi$ to $-\pi$ by normalization where the Sampling frequency maps to 2$\pi$ on the normalized frequency axis and the other frequencies map accordingly.\\
+\textbf{Sampling Frequency = $\Omega_{s}$ = 425 kHz}
+
+\[\omega = \frac{2\pi*\Omega}{\Omega_{s}}\]
+
+Thus the corresponding normalized discrete filter specifications are:-
+\begin{itemize}
+    \item \textbf{Stopband} = 0.485$\pi$ to 0.673$\pi$
+    \item \textbf{Transition Band} = 0.024$\pi$ on either side of stopband
+    \item \textbf{Passband} = 0-0.461$\pi$ and 0.696$\pi$-$\pi$
+    \item\textbf{Tolerance} = 0.15 in magnitude for both passband and stopband
+    \item \textbf{Passband Nature} = Monotonic
+    \item \textbf{Stopband Nature} = Monotonic
+\end{itemize}
+
+\subsection{Bandstop Analog Filter Specifications using Bilinear Transformation}
+The Digital to Analog domain bilinear transformation is as follows:-
+
+\[\Omega = tan(\frac{\omega}{2})\]
+
+
+\noindent
+We will now use this bilinear transformation to get the corresponding Analog frequencies for the above digital frequencies
+
+\begin{center}
+    \begin{tabular}{|c|c|}
+     \hline
+    $\omega$ & $\Omega$ \\ \hline
+    0.485$\pi$ & 0.953 \\ \hline
+    0.673$\pi$ & 1.772 \\ \hline
+    0.461$\pi$ & 0.885 \\ \hline
+    0.696$\pi$ & 1.936 \\ \hline
+    0 & 0 \\ \hline
+    $\pi$ & $\infty$ \\ \hline
+    \end{tabular}
+\end{center}
+\newpage
+
+\noindent
+
+Thus the specifications of the corresponding Analog filter of the same type are as follows:-
+
+\begin{itemize}
+    \item \textbf{Stopband} = 0.953 ($\Omega_{s1}$) to 1.772 ($\Omega_{s2}$)
+    \item \textbf{Transition Band} = 0.885 to 0.953 and 1.772 to 1.936
+    \item \textbf{Passband} = 0 to 0.885 and 1.936 to $\infty$
+    \item\textbf{Tolerance} = 0.15 in magnitude for both passband and stopband
+    \item \textbf{Passband Nature} = Monotonic
+    \item \textbf{Stopband Nature} = Monotonic
+\end{itemize}
+
+\subsection{Frequency Transformation to Analog Lowpass Filter Specifications}
+
+Now, that we have the specifications of the corresponding Analog Filter, we can use the frequency transformation to get the specifications of the corresponding Analog Lowpass filter which can then be designed in practice easily. The transformation we choose to use is given as follows:-
+
+\[\Omega_{L} = \frac{B\Omega}{\Omega_{0}^2 - \Omega^2}\]
+
+While calculating the 2 parameters \textbf{B} and \textbf{$\Omega_{0}$}, we choose to transform the passband edges namely $\Omega_{p1}$ and $\Omega_{p2}$ to -1 and 1. Other frequencies then get mapped accordingly.
+
+
+\[\Omega_{0} = \sqrt{\Omega_{p1}\Omega_{p2}} = \sqrt{0.885*1.936} = 1.30889\]
+
+
+\[B = \Omega_{p2} - \Omega_{p1} = 1.936 - 0.885 = 1.0511\]
+
+
+\newpage
+
+\begin{center}
+    \begin{tabular}{|c|c|}
+     \hline
+    $\Omega$ & $\Omega_{L}$ \\ \hline
+    $0^+$ & $0^+$ \\ \hline
+    0.885 ($\Omega_{P1}$) & +1 ($\Omega_{LP1}$)\\ \hline
+    0.954 ($\Omega_{S1}$) & 1.2447 ($\Omega_{LS1}$) \\ \hline
+    1.30889 ($\Omega_{0}^-$) & $\infty$ \\ \hline
+    1.30889 ($\Omega_{0}^+$) & $-\infty$ \\ \hline
+    1.772 ($\Omega_{S2}$) & -1.305 ($\Omega_{LS2}$) \\ \hline
+    1.936 ($\Omega_{P2}$) & -1 ($\Omega_{LP2}$)\\ \hline
+    $\infty$ & $0^-$ \\ \hline
+    \end{tabular}
+\end{center}
+
+\subsection{Frequency Transformed Lowpass Analog Filter \\ Specifications}
+
+\begin{itemize}
+    \item \textbf{Passband Edge} = 1 ($\Omega_{LP}$)
+    \item \textbf{Stopband Edge}= min($\Omega_{LS1}$,$\Omega_{LS2}$)= min(1.2447,1.305) = 1.2447 ($\Omega_{LS}$)
+    \item\textbf{Tolerance} = 0.15 in magnitude for both passband and stopband
+    \item \textbf{Passband Nature} = Monotonic
+    \item \textbf{Stopband Nature} = Monotonic
+\end{itemize}
+
+\subsection{Lowpass Analog Filter Transfer Function}
+Now, that we have transformed the initial Digital Filter Specifications to the corresponding Analog Lowpass Filter specifications, we are ready to design the Analog Lowpass Filter using the \textbf{Butterworth} approximation. We need the following quantities for that purpose:-\\
+The tolerance for both Stopband and Passband is \textbf{$\delta$ = 0.15}
+
+
+\[D_{1} = \frac{1}{(1 - \delta)^2} - 1 = \frac{1}{0.85^2} - 1 = 0.3841\]
+
+
+
+\[D_{2} = \frac{1}{\delta^2} - 1 = \frac{1}{0.15^2} - 1 = 43.44\]
+
+
+Now we find out the \textbf{Order of the Butterworth Filter(N)} using the following formula:-
+\newpage
+
+
+\[N_{min} = \lceil \frac{log(\sqrt{\frac{D2}{D1}})}{log(\frac{\Omega_{S}}{\Omega_{P}})} \rceil = \lceil 10.8015 \rceil = 11\]
+
+
+The \textbf{cut-off frequency ($\Omega_{C}$)} of the Analog LPF should satisfy the following constraint:-
+
+
+\[\frac{\Omega_{P}}{D_{1}^{\frac{1}{2N}}} \leq \Omega_{C} \leq \frac{\Omega_{S}}{D_{2}^{\frac{1}{2N}}}\]
+
+
+\[1.0444 \leq \Omega_{C} \leq 1.0486\]
+
+
+Thus we choose $\Omega_{C}$ to be \textbf{1.0465}. Next the poles of the transfer function can be obtained by solving the following equation:-
+
+\[1 + (\frac{s}{j\Omega_{C}})^{2N} = 1 + (\frac{s}{j1.0465})^{2N} = 0\]
+
+
+Solving this equation in Matlab, we get the following 11 roots in the Left half of the Complex s plane (The reason for choosing only the left half plane poles is that they are stable):-
+\[p_{1} = -0.14893 + 1.0358j\]
+\[p_{2} = -0.43473 + 0.95193j\]
+\[p_{3} = -0.68531 + 0.79089j\]
+\[p_{4} = -0.88037 + 0.56578j\]
+\[p_{5} = -1.0041 + 0.29483j\]
+\[p_{6} = -1.0465\]
+\[p_{7} = -1.0041 -0.29483j\]
+\[p_{8} = -0.88037 - 0.56578j\]
+\[p_{9} = -0.68531 - 0.79089j\]
+\[p_{10} = -0.43473 - 0.95193j\]
+\[p_{11} = -0.14893 - 1.0358j\]
+
+\newpage
+
+The plot of the poles of the magnitude response of the Analog Lowpass filter plotted in python is as follows:-
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width =\textwidth, height=12cm]{root_plot.png}
+    \caption{Poles of Magnitude response}
+\end{figure}
+
+As now we have the poles, we can finally write down the Transfer Function of the Analog Lowpass Filter.
+
+\[H_{analog,LPF}(s_{L}) = \]
+
+\[\scalebox{1.2}{$\frac{\Omega_{c}^N}{(s_{L}-p_{1})(s_{L}-p_{2})(s_{L}-p_{3})(s_{L}-p_{4})(s_{L}-p_{5})(s_{L}-p_{6})(s_{L}-p_{7})(s_{L}-p_{8})(s_{L}-p_{9})(s_{L}-p_{10})(s_{L}-p_{11})}$}\]
+
+\[= \scalebox{0.9}{$\frac{1.6487}{(s_{L}+1.0465)(s_{L}^2+0.2979s_{L}+1.0951)(s_{L}^2+0.8695s_{L}+1.0951)(s_{L}^2+1.3706s_{L}+1.0951)(s_{L}^2+1.7607s_{L}+1.0951)(s_{L}^2+2.0082s_{L}+1.0951)}$}\]
+
+\newpage
+
+\subsection{Analog Bandstop Transfer Function}
+
+Now we need to transform the Analog Lowpass filter back to Analog Bandstop filter using the same transformation we used earlier.
+\[s_{L} = \frac{Bs}{\Omega_{0}^2 + s^2}\]
+Thus
+\[s_{L} = \frac{1.0511s}{1.7132 + s^2}\]
+
+Substituting this value of $s_{L}$ into the above Analog Lowpass Filter Tranfer Function, we get the Analog Bandstop Filter Tranfer function i.e \textbf{$H_{analog,BSF}(s)$}. As it is a Rational Transfer function, we can write 2 series in Numerator and Denominator where the coefficients of different degrees of \textbf{s} are as follows:-
+
+
+
+\begin{table}[H]
+  \begin{minipage}{.5\linewidth}
+    \centering
+    \begin{tabular}{ |c|c| }
+      \toprule
+      \makecell{Powers of s \\ in Denominator} & \makecell{Coefficients} \\
+      \midrule
+      $s^{22}$ & 1 \\
+      $s^{21}$ & 7.0575 \\
+      $s^{20}$ & 43.7492 \\
+      $s^{19}$ & 178.6824 \\
+      $s^{18}$ & 643.0471 \\
+      $s^{17}$ & 1849.9164 \\
+      $s^{16}$ & 4758.3915 \\
+      $s^{15}$ & 10400.0736 \\
+      $s^{14}$ & 20521.8639 \\
+      $s^{13}$ & 35284.4315 \\
+      $s^{12}$ & 55055.2432 \\
+      $s^{11}$ & 75583.4282 \\
+      $s^{10}$ & 94319.7379 \\
+      $s^{9}$ & 103559.7337 \\
+      $s^{8}$ & 103187.8358 \\
+      $s^{7}$ & 89588.4478 \\
+      $s^{6}$ & 70223.0474 \\
+      $s^{5}$ & 46770.8759 \\
+      $s^{4}$ & 27852.8789 \\
+      $s^{3}$ & 13259.0731 \\
+      $s^{2}$ & 5561.6782 \\
+      $s^{1}$ & 1537.0595 \\
+      $s^{0}$ & 373.1151 \\
+      \bottomrule
+    \end{tabular}
+  \end{minipage}%
+  \begin{minipage}{.5\linewidth}
+    \centering
+    \begin{tabular}{ |c|c| }
+      \toprule
+      \makecell{Powers of s \\ in Numerator} & \makecell{Coefficients} \\
+      \midrule
+      $s^{22}$ & 1 \\
+      $s^{20}$ & 18.8450 \\
+      $s^{18}$ & 161.4248 \\
+      $s^{16}$ & 829.6513 \\
+      $s^{14}$ & 2842.6902 \\
+      $s^{12}$ & 6818.0703 \\
+      $s^{10}$ & 11680.6060 \\
+      $s^{8}$ & 14293.5873 \\
+      $s^{6}$ & 12243.7694 \\
+      $s^{4}$ & 6991.9415 \\
+      $s^{2}$ & 2395.6958 \\
+      $s^{0}$ & 373.1151 \\
+      \bottomrule
+    \end{tabular}
+  \end{minipage}
+\end{table}
+
+\newpage
+
+\subsection{Discrete Time Filter Transfer Function}
+Finally, to transform the Analog Bandstop Transfer Function into the Discrete Bandstop Transfer Function with Butterworth Approximation, we need to make use of the Bilinear Transformation which is given as:-
+\[s = \frac{1 - z^{-1}}{1 + z^{-1}}\]
+
+Substituting the above equation in the Analog Bandstop Filter Transfer Function we get $H_{analog,BSF}(z)$. It can be written in the form
+N(z)/D(z) where the coefficients of the polynomials N(z) and D(z) are given as follows:-
+
+\begin{table}[H]
+  \begin{minipage}{.5\linewidth}
+    \centering
+    \begin{tabular}{ |c|c| }
+      \toprule
+      \makecell{Powers of $z^{-1}$ \\ in Numerator} & \makecell{Coefficients} \\
+      \midrule
+      $z^{-22}$ & 0.07711 \\
+      $z^{-21}$ & 0.4459 \\
+      $z^{-20}$ & 2.0204 \\
+      $z^{-19}$ & 6.3082 \\
+      $z^{-18}$ & 16.7350 \\
+      $z^{-17}$ &  36.2882 \\
+      $z^{-16}$ & 69.2823 \\
+      $z^{-15}$ & 114.14489 \\
+      $z^{-14}$ & 168.5686 \\
+      $z^{-13}$ & 219.7813 \\
+      $z^{-12}$ & 259.1047 \\
+      $z^{-11}$ & 272.1248 \\
+      $z^{-10}$ & 259.1047 \\
+      $z^{-9}$ & 219.7813 \\
+      $z^{-8}$ & 168.5686 \\
+      $z^{-7}$ & 114.1449 \\
+      $z^{-6}$ & 69.2823 \\
+      $z^{-5}$ & 36.28821 \\
+      $z^{-4}$ & 16.7350 \\
+      $z^{-3}$ & 6.3082 \\
+      $z^{-2}$ & 2.02046 \\
+      $z^{-1}$ & 0.4459 \\
+      $z^{0}$ & 0.0771 \\
+      \bottomrule
+    \end{tabular}
+  \end{minipage}%
+  \begin{minipage}{.5\linewidth}
+    \centering
+    \begin{tabular}{ |c|c| }
+      \toprule
+      \makecell{Powers of $z^{-1}$ \\ in Denominator} & \makecell{Coefficients} \\
+      \midrule
+      $z^{-22}$ & 0.0059 \\
+      $z^{-21}$ & 0.0421 \\
+      $z^{-20}$ & 0.2315 \\
+      $z^{-19}$ & 0.8839 \\
+      $z^{-18}$ & 2.8622 \\
+      $z^{-17}$ & 7.6215 \\
+      $z^{-16}$ & 17.8860 \\
+      $z^{-15}$ & 36.4185 \\
+      $z^{-14}$ & 66.6106 \\
+      $z^{-13}$ & 108.1478 \\
+      $z^{-12}$ & 159.2153 \\
+      $z^{-11}$ & 210.0178 \\
+      $z^{-10}$ & 251.9731 \\
+      $z^{-9}$ & 271.0224 \\
+      $z^{-8}$ & 264.5039 \\
+      $z^{-7}$ & 229.5555 \\
+      $z^{-6}$ & 179.1630 \\
+      $z^{-5}$ & 121.7212 \\
+      $z^{-4}$ & 72.9523 \\
+      $z^{-3}$ & 36.1561 \\
+      $z^{-2}$ & 15.1724 \\
+      $z^{-1}$ & 4.4745 \\
+      $z^{0}$ & 1 \\
+      \bottomrule
+    \end{tabular}
+  \end{minipage}
+\end{table}
+
+\newpage
+
+
+\subsection{Peer Review}
+
+I have reviewed Ojas Karanjkar's (Roll Number- 210070057) report and I have noticed that the coefficients of the polynomial in s are too small and the phase response is too noisy in the region of Stopband and there seems to be a calculation mistake in the conversion of Bandpass to Lowpass Filter in Analog Domain.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
