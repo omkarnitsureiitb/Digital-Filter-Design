@@ -1,0 +1,297 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[hidelinks]{hyperref}
+\usepackage[a4paper]{geometry}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{floatrow}
+\graphicspath{{./}}
+\usepackage{booktabs,makecell}
+\usepackage{titlesec}
+
+\titleformat*{\section}{\LARGE\bfseries}
+\titleformat*{\subsection}{\Large\bfseries}
+
+\pagestyle{fancy}
+
+\lhead{\leftmark}
+\rhead{Page \thepage}
+\cfoot{FIR Bandpass & Bandstop Filter}
+\renewcommand{\footrulewidth}{1pt}
+
+\begin{document}
+
+\begin{titlepage}
+\begin{center}
+    \vspace*{\fill}
+\includegraphics[scale=0.6]{iitb_logo.jpg}\\
+[4 cm]
+    \rule{12.5cm}{0.75mm}\\
+    \huge{\bfseries Filter Design Assignment-III}
+    \rule{12.5cm}{0.75mm}\\
+    [0.5cm]
+   {\textbf {EE338 - 2023 \\
+    FIR Bandpass and Bandstop Filter Review Report}}\\
+    [2cm]
+\end{center}
+\begin{flushleft}
+   {\huge
+    Name:- Omkar Nitsure \\
+    Roll Number:- 210070057 \\}
+    \end{flushleft}
+\end{titlepage}
+\tableofcontents
+
+\pagestyle{fancy}
+
+\fancyhead{}
+\fancyhead[L]{\textbf{Filter Design(FIR Bandpass,Bandstop)}}
+\fancyhead[R]{\textbf{Omkar Nitsure(210070057)}}
+\fancyfoot{}
+\fancyfoot[C]{\thepage}
+\newpage
+\section{Student Details:-}
+\textbf{Name}:- Omkar Nitsure\\
+\textbf{Roll no}:- 210070057\\
+\textbf{Filter Number}:- 107\\
+
+\section{FIR Bandpass Filter}
+\subsection{Discrete Time Filter Specifications}
+
+Filter Number Assigned = \textbf{107}\\
+As Filter number $>$ 80, we get the modified $\textbf{m} = 107 - 80 = \textbf{27}$\\
+$q(m) =$ greatest integer strictly less than 0.1m
+Thus for $m = 27$, we get $\textbf{q(m) = 2}$\\
+$\textbf{r(m)} = m - 10q(m) = 27 - 10(2) = \textbf{7}$\\
+$\textbf{BL(m)} = 10 + 5q(m) + 13r(m) = 10 + 5(2) + 13(7) = \textbf{111}$\\
+$\textbf{BH(m)} = BL(m) + 75 = 111 + 75 = \textbf{186}$\\
+\par
+
+As the Sampling Frequency is more than \textbf{Twice} the maximum frequency in the signal, there will be no Aliasing according to \textbf{Nyquist Theorem.}
+\noindent So the Specifications of the \textbf{Bandpass Filter} to be designed are as follows:-
+
+\begin{itemize}
+    \item \textbf{Sampling Frequency} = 600 kHz
+    \item \textbf{Passband} = 111 kHz$(f_{p1})$ to 186 kHz$(f_{p2})$
+    \item \textbf{Transition band} = 5 kHz on either side of passband
+    \item \textbf{Stopband} = 0-106 kHz and 191-300 kHz
+    \item \textbf{Tolerance} = 0.15 for both passband and stopband
+\end{itemize}
+
+\subsection{Normalized Digital Filter Specifications}
+The above frequency response can be normalized in a range of $-\pi$ to $-\pi$ by normalization. The sampling frequency maps to 2$\pi$ on the normalized frequency axis and the other frequencies map accordingly.\\
+\textbf{Sampling Frequency = $\Omega_{s}$ = 600 kHz}
+
+\[\omega = \frac{2\pi\Omega}{\Omega_{s}}\]
+
+Thus the corresponding normalized discrete filter specifications are:-
+\begin{itemize}
+    \item \textbf{Passband} = 0.37$\pi$ to 0.62$\pi$
+    \item \textbf{Transition Band} = 0.0167$\pi$ on either side of passband
+    \item \textbf{Stopband} = 0-0.3533$\pi$ and 0.6367$\pi$-$\pi$
+    \item\textbf{Tolerance} = 0.15 in magnitude for both passband and stopband
+\end{itemize}
+
+We calculate the cutoff frequencies in the ideal frequency response of a Lowpass filter by averaging the passband and stopband frequencies
+
+\[f_{c1} = \frac{f_{s1} + f_{p1}}{2} = 108.5 kHz\]
+
+\[f_{c2} = \frac{f_{s2} + f_{p1}}{2} = 188.5 kHz\]
+
+We get the corresponding Angular frequencies by using the same formula above i.e
+\[\omega_{c1} = \frac{2\pi f_{c1}}{\Omega_{s}} = 1.1362\]
+
+\[\omega_{c2} = \frac{2\pi f_{c2}}{\Omega_{s}} = 1.974\]
+
+We next calculate $\omega_{T}$ required in the calculation of \textbf{N}.
+
+\[\omega_{T} = \frac{2\pi(f_{p1} - f_{s1})}{\Omega_{s}} = 0.0524\]
+
+\subsection{Calculation of N for the FIR Bandpass Filter}
+
+I initially calculated \textbf{A} which is then required in further calculations using the following formula:- 
+
+\[A = -20log(Delta) = -20log(0.15) = 16.4782\]
+
+Now we are ready to calculate \textbf{N} for the Specifications of the Discrete Bandpass filter that I need to design using the following Empirical formula:- 
+
+\[N = \lceil \frac{A - 8}{2*2.285*\omega_{T}} \rceil = 36\]
+
+Following Empirical results are used to determine $\alpha$ to be used later to calculate $\beta$ which will be used in the Generation of the \textbf{Kaiser window} coefficients.
+
+\newpage
+
+The conditional statements for the value of $\alpha$ are based on the value of A calculated above, as follows:- \par
+
+if A $<$ 21 then $\alpha = 0$ \par
+if $A \geq 21$ and $A \leq 50$ then \par
+\[\alpha = 0.07886(A - 21) + 0.5842(A - 21)^{0.4}\]
+else $\alpha = 0.1102(A - 8.7)$ \par
+As A is less than 21 as calculated above we get $\alpha = 0$ which corresponds to the \textbf{Rectangular Window} whose equivalent Kaiser Window coefficients will be used in the following discussions.
+
+
+Now we have $\beta = \frac{\alpha}{N} = 0$
+
+We now evaluate the FIR impulse response in the following sections for (2N+1) points, namely the origin and N points symmetrically on either side of the origin.
+
+\subsection{Evaluating 2N + 1 points of the Impulse response of  Bandpass Filter}
+
+We can find out the Impulse response of an ideal bandpass filter by simply subtracting the Impulse response of 2 Ideal Lowpass filters with cutoff frequencies $\omega_{c2}$ and $\omega_{c1}$ as calculated above. The Impulse response of an Ideal Lowpass Filter is as follows:- 
+
+\[h[n] = \frac{sin(\omega_{c}n)}{\pi n} if n \neq 0\]
+\[h[0] = \frac{\omega_{c}}{\pi}\]
+
+So finally we are ready to find the coefficients of the \textbf{FIR Bandpass Filter} using the window approach.
+The following formula simply gives the coefficients:-
+
+\[h_{FIR,BPF}[n] = h_{ideal,BPF}[n]*kaiserWindow[n]\]
+
+We can then calculate the corresponding \textbf{Magnitude and phase Response} using the built-in functions in Matlab. We get the following plots for the \textbf{Magnitude and phase Response} of the \textbf{FIR Bandpass Filter}
+
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width =\textwidth, height=9cm]{bandpass_FIR_1.png}
+    \caption{Magntitude Response of the Filter in Frequency}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width =\textwidth, height=9cm]{Bandpass_FIR_2.png}
+    \caption{Magnitude Response of the Filter in Normalized Frequency}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width =\textwidth, height=10cm]{Bandpass_FIR_3.png}
+    \caption{Phase response of the Filter}
+\end{figure}
+
+\subsection{Comparison between FIR and IIR Realizations}
+The main difference between FIR and IIR filters as is evident from their names is that IIR filters have an Impulse response which is non-zero for an infinite number of indexes whereas FIR filters have Impulse responses which are non-zero over only a finite range of indices.
+Also, it is important to note that the FIR filter specifications are much easier to control than the IIR filters because we can increase N or change the window function easily. A very important point to note is that the Transfer functions for the FIR filter have only zeroes whereas the IIR filter Transfer functions can have both zeroes and poles. FIR filters need greater processing power in comparison to IIR filters. In FIR filters we delay the output such that the Impulse response is causal, so the amount of Delay in an FIR filer is usually much larger than that of an IIR filter where we do not introduce any kind of artificial delay.
+
+\section{FIR Bandstop Filter}
+\subsection{Discrete Time Filter Specifications}
+
+Filter Number Assigned = \textbf{107}\\
+As Filter number $>$ 80, we get the modified $\textbf{m} = 107 - 80 = \textbf{27}$\\
+$q(m) =$ greatest integer strictly less than 0.1m
+Thus for $m = 27$, we get $\textbf{q(m) = 2}$\\
+$\textbf{r(m)} = m - 10q(m) = 27 - 10(2) = \textbf{7}$\\
+$\textbf{BL(m)} = 20 + 3q(m) + 11r(m) = 10 + 5(2) + 13(7) = \textbf{103}$\\
+$\textbf{BH(m)} = BL(m) + 40 = 103 + 40 = \textbf{143}$\\
+\par
+
+\noindent So the Specifications of the \textbf{Bandstop Filter} to be designed are as follows:-
+
+\begin{itemize}
+    \item \textbf{Sampling Frequency} = 425 kHz
+    \item \textbf{Stopband} = 103 kHz to 143 kHz
+    \item \textbf{Transition band} = 5 kHz on either side of stopband
+    \item \textbf{Passband} = 0-98 kHz and 148-212.5 kHz
+    \item \textbf{Tolerance} = 0.15 for both passband and stopband
+\end{itemize}
+
+\subsection{Normalized Digital Filter Specifications}
+The above frequency response can be normalized in a range of $-\pi$ to $-\pi$ by normalization where the Sampling frequency maps to 2$\pi$ on the normalized frequency axis and the other frequencies map accordingly.\\
+\textbf{Sampling Frequency = $\Omega_{s}$ = 425 kHz}
+
+\[\omega = \frac{2\pi\Omega}{\Omega_{s}}\]
+
+Thus the corresponding normalized discrete filter specifications are:-
+\begin{itemize}
+    \item \textbf{Stopband} = 0.485$\pi$ to 0.673$\pi$
+    \item \textbf{Transition Band} = 0.024$\pi$ on either side of stopband
+    \item \textbf{Passband} = 0-0.461$\pi$ and 0.696$\pi$-$\pi$
+    \item\textbf{Tolerance} = 0.15 in magnitude for both passband and stopband
+\end{itemize}
+
+\newpage
+
+We calculate the cutoff frequencies in the ideal frequency response of a Lowpass filter by averaging the passband and stopband frequencies
+
+\[f_{c1} = \frac{f_{s1} + f_{p1}}{2} = 100.5 kHz\]
+
+\[f_{c2} = \frac{f_{s2} + f_{p1}}{2} = 145.5 kHz\]
+
+We get the corresponding Angular frequencies by using the same formula above i.e
+\[\omega_{c1} = \frac{2\pi f_{c1}}{\Omega_{s}} = 1.4858\]
+
+\[\omega_{c2} = \frac{2\pi f_{c2}}{\Omega_{s}} = 2.1511\]
+
+We next calculate $\omega_{T}$ required in the calculation of \textbf{N}.
+
+\[\omega_{T} = \frac{2\pi(f_{s1} - f_{p1})}{\Omega_{s}} = 0.0739\]
+
+\subsection{Calculation of N for the FIR Bandstop Filter}
+
+I initially calculated \textbf{A} which is then required in further calculations using the following formula:- 
+
+\[A = -20log(Delta) = -20log(0.15) = 16.4782\]
+
+Now we are ready to calculate \textbf{N} for the Specifications of the Discrete Bandstop filter that I need to design using the following Empirical formula:- 
+
+\[N = \lceil \frac{A - 8}{2*2.285*\omega_{T}} \rceil = 36\]
+
+Following Empirical results are used to determine $\alpha$ to be used later to calculate $\beta$ which will be used in the Generation of the \textbf{Kaiser window} coefficients.
+
+\newpage
+
+The conditional statements for the value of $\alpha$ are based on the value of A calculated above, as follows:- \par
+
+if A $<$ 21 then $\alpha = 0$ \par
+if $A \geq 21$ and $A \leq 50$ then \par
+\[\alpha = 0.07886(A - 21) + 0.5842(A - 21)^{0.4}\]
+else $\alpha = 0.1102(A - 8.7)$ \par
+As A is less than 21 as calculated above we get $\alpha = 0$ which corresponds to the \textbf{Rectangular Window} whose equivalent Kaiser Window coefficients will be used in the following discussions.
+
+
+Now we have $\beta = \frac{\alpha}{N} = 0$
+
+We now evaluate the FIR impulse response in the following sections for (2N+1) points, namely the origin and N points symmetrically on either side of the origin.
+
+\subsection{Evaluating 2N + 1 points of the Impulse response of  Bandstop Filter}
+
+The Impulse response of Ideal Bandstop filter can be calculated simply by subtracting the Impulse response of Ideal Bandpass filter from the \textbf{All pass filter} impulse response.
+
+We can find out the Impulse response of an ideal bandpass filter by simply subtracting the Impulse response of 2 Ideal Lowpass filters with cutoff frequencies $\omega_{c2}$ and $\omega_{c1}$ as calculated above. The Impulse response of an Ideal Lowpass Filter is as follows:- 
+
+\[h[n] = \frac{sin(\omega_{c}n)}{\pi n} if n \neq 0\]
+\[h[0] = \frac{\omega_{c}}{\pi}\]
+
+So finally we are ready to find the coefficients of the \textbf{FIR Bandstop Filter} using the window approach.
+The following formula simply gives the coefficients:-
+
+\[h_{FIR,BSF}[n] = h_{ideal,BSF}[n]*kaiserWindow[n]\]
+
+We can then calculate the corresponding \textbf{Magnitude and phase Response} using the built-in functions in Matlab. We get the following plots for the \textbf{Magnitude and phase Response} of the \textbf{FIR Bandstop Filter}
+
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width =\textwidth, height=9cm]{Bandstop_FIR_1.png}
+    \caption{Magntitude Response of the Filter in Frequency}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width =\textwidth, height=9cm]{Bandstop_FIR_2.png}
+    \caption{Magnitude Response of the Filter in Normalized Frequency}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width =\textwidth, height=10cm]{Bandstop_FIR_3.png}
+    \caption{Phase response of the Filter}
+\end{figure}
+
+\section{Peer Review}
+I have reviewed the FIR Bandpass and Bandstop filter Design report of Ojas Karanjkar, Roll No. 210070040. He has got the correct nature of Magnitude as well as phase plot for both the Bandpass and Bandstop case and his design also satisfies the given constraints. Thus, I certify that the FIR bandpass and Bandstop filter, designed by Ojas Karanjkar is correct.
+
+
+
+\end{document}
