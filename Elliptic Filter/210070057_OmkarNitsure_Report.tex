@@ -1,0 +1,659 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[hidelinks]{hyperref}
+\usepackage[a4paper]{geometry}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{floatrow}
+\graphicspath{{./}}
+\usepackage{booktabs,makecell}
+\usepackage{titlesec}
+
+\titleformat*{\section}{\LARGE\bfseries}
+\titleformat*{\subsection}{\Large\bfseries}
+
+\pagestyle{fancy}
+
+\lhead{\leftmark}
+\rhead{Page \thepage}
+\cfoot{Elliptic Bandpass & Bandstop Filter}
+\renewcommand{\footrulewidth}{1pt}
+
+\begin{document}
+
+\begin{titlepage}
+\begin{center}
+    \vspace*{\fill}
+\includegraphics[scale=0.6]{iitb_logo.jpg}\\
+[4 cm]
+    \rule{12.5cm}{0.75mm}\\
+    \huge{\bfseries Filter Design Assignment-IV}
+    \rule{12.5cm}{0.75mm}\\
+    [0.5cm]
+   {\textbf {EE338 - 2023 \\
+    Elliptic Filters Review Report}}\\
+    [2.5cm]
+\end{center}
+\begin{flushleft}
+   {\huge
+    Name:- Omkar Nitsure \\
+    Roll Number:- 210070057 \\}
+    \end{flushleft}
+\end{titlepage}
+\tableofcontents
+
+
+\pagestyle{fancy}
+
+\fancyhead{}
+\fancyhead[L]{\textbf{Elliptic Filter Design}}
+\fancyhead[R]{\textbf{Omkar Nitsure(210070057)}}
+\fancyfoot{}
+\fancyfoot[C]{\thepage}
+\newpage
+\section{Student Details:-}
+\textbf{Name}:- Omkar Nitsure\\
+\textbf{Roll no}:- 210070057\\
+\textbf{Filter Number}:- 107\\
+
+
+\section{Elliptic Bandpass Filter}
+
+\subsection{Discrete Time Filter Specifications}
+
+Filter Number Assigned = \textbf{107}\\
+As Filter number $>$ 80, we get the modified $\textbf{m} = 107 - 80 = \textbf{27}$\\
+$q(m) =$ greatest integer strictly less than 0.1m
+Thus for $m = 27$, we get $\textbf{q(m) = 2}$\\
+$\textbf{r(m)} = m - 10q(m) = 27 - 10(2) = \textbf{7}$\\
+$\textbf{BL(m)} = 10 + 5q(m) + 13r(m) = 10 + 5(2) + 13(7) = \textbf{111}$\\
+$\textbf{BH(m)} = BL(m) + 75 = 111 + 75 = \textbf{186}$\\
+\par
+
+As the Sampling Frequency is more than \textbf{Twice} the maximum frequency in the signal, there will be no Aliasing according to \textbf{Nyquist Theorem.}
+\noindent So the Specifications of the \textbf{Bandpass Filter} to be designed are as follows:-
+
+\begin{itemize}
+    \item \textbf{Sampling Frequency} = 600 kHz
+    \item \textbf{Passband} = 111 kHz to 186 kHz
+    \item \textbf{Transition band} = 5 kHz on either side of passband
+    \item \textbf{Stopband} = 0-106 kHz and 191-300 kHz
+    \item \textbf{Tolerance} = 0.15 for both passband and stopband
+    \item \textbf{Passband Nature} = Equiripple
+    \item \textbf{Stopband Nature} = Equiripple
+\end{itemize}
+\newpage
+
+\subsection{Normalized Digital Filter Specifications}
+The above frequency response can be normalized in a range of $-\pi$ to $-\pi$ by normalization where the Sampling frequency maps to 2$\pi$ on the normalized frequency axis and the other frequencies map accordingly.\\
+\textbf{Sampling Frequency = $\Omega_{s}$ = 600 kHz}
+
+\[\omega = \frac{2\pi*\Omega}{\Omega_{s}}\]
+
+Thus the corresponding normalized discrete filter specifications are:-
+\begin{itemize}
+    \item \textbf{Passband} = 0.37$\pi$ to 0.62$\pi$
+    \item \textbf{Transition Band} = 0.0167$\pi$ on either side of passband
+    \item \textbf{Stopband} = 0-0.3533$\pi$ and 0.6367$\pi$-$\pi$
+    \item\textbf{Tolerance} = 0.15 in magnitude for both passband and stopband
+    \item \textbf{Passband Nature} = Equiripple
+    \item \textbf{Stopband Nature} = Equiripple
+\end{itemize}
+
+\subsection{Bandpass Analog Filter Specifications using Bilinear Transformation}
+The Digital to Analog domain bilinear transformation is as follows:-
+
+\[\Omega = tan(\frac{\omega}{2})\]
+
+\noindent
+We will now use this bilinear transformation to get the corresponding frequencies in the Analog domain for the above frequencies in the digital domain.
+
+\begin{center}
+    \begin{tabular}{|c|c|}
+     \hline
+    $\omega$ & $\Omega$ \\ \hline
+    0.37$\pi$ & 0.6569 \\ \hline
+    0.62$\pi$ & 1.4714 \\ \hline
+    0.3533$\pi$ & 0.62 \\ \hline
+    0.6367$\pi$ & 1.5577 \\ \hline
+    0 & 0 \\ \hline
+    $\pi$ & $\infty$ \\ \hline
+    \end{tabular}
+\end{center}
+\newpage
+
+\noindent
+
+Thus the specifications of the corresponding Analog filter of the same type are as follows:-
+
+\begin{itemize}
+    \item \textbf{Passbandband} = 0.6569 ($\Omega_{p1}$) to 1.4714 ($\Omega_{p2}$)
+    \item \textbf{Transition Band} = 0.62 to 0.6569 and 1.4714 to 1.5577
+    \item \textbf{Stopband} = 0 to 0.0.62($\Omega_{s1}$) and 1.5577($\Omega_{s2}$) to $\infty$
+    \item\textbf{Tolerance} = 0.15 in magnitude for both passband and stopband
+    \item \textbf{Passband Nature} = Equiripple
+    \item \textbf{Stopband Nature} = Equiripple
+\end{itemize}
+
+\subsection{Frequency Transformation to Analog Lowpass Filter Specifications}
+
+Now, that we have the specifications of the corresponding Analog Filter, we can use the frequency transformation to get the specifications of the corresponding Analog Lowpass filter which can then be designed in practice easily. The transformation we choose to use is given as follows:-
+
+\[\Omega_{L} = \frac{\Omega^2 - \Omega_{0}^2}{B\Omega}\]
+
+While calculating the 2 parameters \textbf{B} and \textbf{$\Omega_{0}$}, we choose to transform the passband edges namely $\Omega_{p1}$ and $\Omega_{p2}$ to -1 and 1. Other frequencies then get mapped accordingly.
+
+\[\Omega_{0} = \sqrt{\Omega_{p1}\Omega_{p2}} = \sqrt{0.6569*1.4714} = 0.98314\]
+
+\[B = \Omega_{p2} - \Omega_{p1} = 1.4714 - 0.6569 = 0.8146\]
+
+\begin{center}
+    \begin{tabular}{|c|c|}
+     \hline
+    $\Omega$ & $\Omega_{L}$ \\ \hline
+    $0^+$ & $-\infty$ \\ \hline
+    0.6569 ($\Omega_{P1}$) & -1 ($\Omega_{LP1}$)\\ \hline
+    1.4714 ($\Omega_{P2}$) & +1 ($\Omega_{LP2}$)\\ \hline
+    0.98314 ($\Omega_{0}$) & 0 \\ \hline
+    0.62 ($\Omega_{S1}$) & -1.1526 ($\Omega_{LS1}$) \\ \hline
+    1.5577 ($\Omega_{S2}$) & 1.1504 ($\Omega_{LS2}$) \\ \hline
+    $\infty$ & $\infty$ \\ \hline
+    \end{tabular}
+\end{center}
+
+\subsection{Frequency Transformed Lowpass Analog Filter Specifications}
+
+\begin{itemize}
+    \item \textbf{Passband Edge} = 1 ($\Omega_{LP}$)
+    \item \textbf{Stopband Edge}= min(-$\Omega_{LS1}$,$\Omega_{LS2}$)= min(1.1526,1.1504) = 1.1504 ($\Omega_{LS}$)
+    \item\textbf{Tolerance} = 0.15 in magnitude for both passband and stopband
+    \item \textbf{Passband Nature} = Equiripple
+    \item \textbf{Stopband Nature} = Equiripple
+\end{itemize}
+
+We need some additional terminology for the design of the \textbf{Elliptic Bandpass} filter which are noted as follows:- 
+
+\[H_{Analog,Passband,Min} = A_{p} = 1 - \delta = 1 - 0.15 = 0.85\]
+
+\[H_{Analog,Stopband,Max} = A_{s} = \delta = 0.15\]
+
+So, Now we calculate the ripple parameters $\epsilon_{p}$ and $\epsilon_{s}$ for the Elliptic Filter:-
+
+\[\epsilon_{p} = \sqrt{\frac{1}{A_{p}^2} - 1} = 0.61974\]
+
+\[\epsilon_{s} = \sqrt{\frac{1}{A_{s}^2} - 1} = 6.59124\]
+
+So we move ahead and calculate the Selectivity(\textbf{k}) and Discrimination(\textbf{k1}) parameters:-
+
+\[k = \frac{\Omega_{p}}{\Omega_{s}} = 0.86926\]
+\[k1 = \frac{\epsilon_{p}}{\epsilon_{p}} = 0.09402\]
+
+Now, we need to calculate \textbf{N}, the order of the Elliptic Filter. But in order to Calculate that we first need to solve the \textbf{Complete Elliptic Integral( K )} for 4 values namely \textbf{k, k', $k_{1}, k_{1}'$}
+such that;-
+
+\[k' = \sqrt{1 - k^{2}} = 0.49436\]
+\[k_{1}' = \sqrt{1 - k_{1}^{2}} = 0.99557\]
+
+The \textbf{Complete Elliptic Integral( K )} is as follows:-
+\[K(k) = \int_{0}^{\frac{\pi}{2}} \frac{1}{\sqrt{1 - k^{2}sin^{2}(\theta)}} \, d\theta \]\
+and we use the following Notation,
+\[K(k') = K'(k)\]
+
+\subsection{Finding the Order of Elliptic Bandpass Filter}
+
+We finally solve for \textbf{N}, the order of the Elliptic Bandpass Filter using the \textbf{Matlab} Built-in function \textbf{ellipk} to evaluate the \textbf{Complete Elliptic Integral(K)},
+\[N = \lceil {\frac{K(k)K(k_{1}')}{K(k')K(k_{1})}} \rceil = \lceil 3.0725 \rceil = 4\]
+
+But there is a problem, in order to get an Elliptic Bandpass Filter which satisfies the Given Specifications, it needs to satisfy the following condition called the \textbf{Degree Equation}, which it does for N = 3.0725 but not for N = 4 and thus we re-evaluate the value of \textbf{k} by keeping $k_{1}$ the same and using N = 4.
+
+\[N = \frac{K(k)K(k_{1}')}{K(k')K(k_{1})}\]
+
+We re-evaluate the value of \textbf{k} using the \textbf{Matlab} Built-in function \textbf{ellipdeg}. So the new value of \textbf{k} is \textbf{0.9595}
+
+
+We write N as:-
+\[N = 2L + r\]
+where \textbf{L} is the Number of Quadratic Factors in the Numerator and Denominator whereas \textbf{r} is the Number of Non-repeated Real poles of the Analog Lowpass Transfer Function.
+Thus we have,
+\[L = 2, r = 0\]
+
+\subsection{Zeroes and Poles of Analog Lowpass Transfer Function}
+ The general form of a transfer function of a low pass filter is :
+\[|H(\Omega)|^{2} = \frac{1}{1 + \epsilon _{p}^{2}F_{N}^{2}(\omega)}, \omega = \frac{\Omega}{\Omega_{p}}\]
+
+The Analog Filter characteristic function $F_{N}(w)$ in Elliptic case is:-
+\[F_{N}(w) = cd(NuK_{1}, k1)\] where u is a Matrix of Scaling Factor that is defined as:-
+\[u_{i} = \frac{2i - 1}{N}, i = 1, 2,..., L\]
+So, the zeros of $F_{N}(w)$ will be at the following frequencies:-
+\[\zeta_{i} = cd(u_{i}K,k),  i = 1,2...,L\]
+
+We also need an additional parameter as given below for the calculations of poles of the transfer function:-
+\[\nu_{0} = \frac{-j}{N}sn^{-1}(\frac{j}{\epsilon_{p}},k_{1})\]
+
+So, now finally we are ready to evaluate the \textbf{zeros} and \textbf{poles} of the Analog Lowpass Transfer Function using the \textbf{Elliptic} Approximation,
+
+\[Z_{ai} = \Omega_{p}j(k\zeta_{i})^{-1}, i = 1,2,..,L\]
+\[P_{ai} = \Omega_{p}j cd((u_{i} - jv_{0})K,k), i = 1,2,..,L\]
+
+\[Z_{a1} = 1.0639i\]
+\[Z_{a2} = -1.0639i\]
+\[Z_{a3} = 1.7690i\]
+\[Z_{a4} = -1.7690i\]
+
+\[P_{a1} = -0.0310 + 0.9995i\]
+\[P_{a2} = -0.0310 - 0.9995i\]
+\[P_{a3} = -0.3536 + 0.7071i\]
+\[P_{a4} = -0.3536 - 0.7071i\]
+
+
+\[H_{analog,LPF}(s_{L}) = \frac{0.85(0.8835s_{L}^{2} + 1)(0.3196s_{L}^{2} + 1)}{(s_{L}^{2} + 0.0619s_{L} + 1)(1.5999s_{L}^{2} + 1.1314s_{L} + 1)}\]
+
+\subsection{Analog Bandpass Transfer Function}
+
+Now we need to transform the Analog Lowpass Filter back to the Analog Bandpass Filter using the same transformation we used earlier.
+\[s_{L} = \frac{\Omega_{0}^2 + s^2}{Bs}\]
+Thus
+\[s_{L} = \frac{0.96656 + s^2}{0.81458s}\]
+
+Substituting this value of $s_{L}$ into the above Analog Lowpass Filter Tranfer Function, we get the Analog Bandpass Filter Transfer function i.e \textbf{$H_{analog,BPF}(s)$}. As it is a Rational Transfer function, we can write \textbf{2 series} in Numerator and Denominator where the coefficients of different degrees of \textbf{s} are as follows:-
+
+\begin{table}[H]
+  \begin{minipage}{.5\linewidth}
+    \centering
+    \begin{tabular}{ |c|c| }
+      \toprule
+      \makecell{Powers of s \\ in Denominator} & \makecell{Coefficients} \\
+      \midrule
+      $s^{8}$ & 1 \\
+      $s^{7}$ & 0.6265 \\
+      $s^{6}$ & 4.9737 \\
+      $s^{5}$ & 2.2199 \\
+      $s^{4}$ & 8.0215 \\
+      $s^{3}$ & 2.1456 \\
+      $s^{2}$ & 4.6466 \\
+      $s^{1}$ & 0.5657 \\
+      $s^{0}$ & 0.8728 \\
+      \bottomrule
+    \end{tabular}
+  \end{minipage}%
+  \begin{minipage}{.5\linewidth}
+    \centering
+    \begin{tabular}{ |c|c| }
+      \toprule
+      \makecell{Powers of s \\ in Numerator} & \makecell{Coefficients} \\
+      \midrule
+      $s^{8}$ & 0.15 \\
+      $s^{6}$ & 1.0041 \\
+      $s^{4}$ & 1.8947 \\
+      $s^{2}$ & 0.9381 \\
+      $s^{0}$ & 0.1309 \\
+      \bottomrule
+    \end{tabular}
+  \end{minipage}
+\end{table}
+
+\subsection{Discrete Time Filter Transfer Function}
+Finally, to transform the Analog Bandpass Transfer Function into the Discrete Bandpass Transfer Function with \textbf{Elliptic} Approximation, we need to make use of the Bilinear Transformation which is given as:-
+\[s = \frac{1 - z^{-1}}{1 + z^{-1}}\]
+
+Substituting the above equation in the Analog Bandspass Filter Transfer Function we get $H_{Digital,BPF}(z)$. It can be written in the form
+N(z)/D(z) where the coefficients of the polynomials N(z) and D(z) are given as follows:-
+
+\begin{table}[H]
+  \begin{minipage}{.5\linewidth}
+    \centering
+    \begin{tabular}{ |c|c| }
+      \toprule
+      \makecell{Powers of $z^{-1}$ \\ in Numerator} & \makecell{Coefficients} \\
+      \midrule
+      $z^{-8}$ & 0.1642 \\
+      $z^{-7}$ & -0.0166 \\
+      $z^{-6}$ & 0.3213 \\
+      $z^{-5}$ & -0.0321 \\
+      $z^{-4}$ & 0.4631 \\
+      $z^{-3}$ & -0.0321 \\
+      $z^{-2}$ & 0.3213 \\
+      $z^{-1}$ & -0.0166 \\
+      $z^{0}$ & 0.1642 \\
+      \bottomrule
+    \end{tabular}
+  \end{minipage}%
+  \begin{minipage}{.5\linewidth}
+    \centering
+    \begin{tabular}{ |c|c| }
+      \toprule
+      \makecell{Powers of $z^{-1}$ \\ in Denominator} & \makecell{Coefficients} \\
+      \midrule
+      $z^{-8}$ & 0.5567 \\
+      $z^{-7}$ & -0.0723 \\
+      $z^{-6}$ & 2.0291 \\
+      $z^{-5}$ & -0.2157 \\
+      $z^{-4}$ & 3.3113 \\
+      $z^{-3}$ & -0.2481 \\
+      $z^{-2}$ & 2.6641 \\
+      $z^{-1}$ & -0.1132 \\
+      $z^{0}$ & 1 \\
+      \bottomrule
+    \end{tabular}
+  \end{minipage}
+\end{table}
+
+\subsection{ Plots of Magnitude Response and Phase Response of the Elliptic Bandpass Filter}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width =\textwidth, height=8cm]{1.png}
+    \caption{Magntitude Response of the Filter in Frequency}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width =\textwidth, height=8cm]{2.png}
+    \caption{Magnitude Response of the Filter in Normalized Frequency}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width =\textwidth, height=10cm]{3.png}
+    \caption{Phase response of the Filter}
+\end{figure}
+
+\section{Elliptic Bandstop Filter}
+
+\subsection{Discrete Time Filter Specifications}
+
+Filter Number Assigned = \textbf{107}\\
+As Filter number $>$ 80, we get the modified $\textbf{m} = 107 - 80 = \textbf{27}$\\
+$q(m) =$ greatest integer strictly less than 0.1m
+Thus for $m = 27$, we get $\textbf{q(m) = 2}$\\
+$\textbf{r(m)} = m - 10q(m) = 27 - 10(2) = \textbf{7}$\\
+$\textbf{BL(m)} = 20 + 3q(m) + 11r(m) = 10 + 5(2) + 13(7) = \textbf{103}$\\
+$\textbf{BH(m)} = BL(m) + 40 = 103 + 40 = \textbf{143}$\\
+\par
+
+As the Sampling Frequency is more than \textbf{Twice} the maximum frequency in the signal, there will be no Aliasing according to \textbf{Nyquist Theorem.}
+\noindent So the Specifications of the \textbf{Bandstop Filter} to be designed are as follows:-
+
+\begin{itemize}
+    \item \textbf{Sampling Frequency} = 425 kHz
+    \item \textbf{Stopband} = 103 kHz to 143 kHz
+    \item \textbf{Transition band} = 5 kHz on either side of stopband
+    \item \textbf{Passband} = 0-98 kHz and 148-212.5 kHz
+    \item \textbf{Tolerance} = 0.15 for both passband and stopband
+    \item \textbf{Passband Nature} = Equiripple
+    \item \textbf{Stopband Nature} = Equiripple
+\end{itemize}
+
+
+\subsection{Normalized Digital Filter Specifications}
+The above frequency response can be normalized in a range of $-\pi$ to $-\pi$ by normalization where the Sampling frequency maps to 2$\pi$ on the normalized frequency axis and the other frequencies map accordingly.\\
+\textbf{Sampling Frequency = $\Omega_{s}$ = 425 kHz}
+
+\[\omega = \frac{2\pi*\Omega}{\Omega_{s}}\]
+
+Thus the corresponding normalized discrete filter specifications are:-
+\begin{itemize}
+    \item \textbf{Stopband} = 0.485$\pi$ to 0.673$\pi$
+    \item \textbf{Transition Band} = 0.024$\pi$ on either side of stopband
+    \item \textbf{Passband} = 0-0.461$\pi$ and 0.696$\pi$-$\pi$
+    \item\textbf{Tolerance} = 0.15 in magnitude for both passband and stopband
+    \item \textbf{Passband Nature} = Equiripple
+    \item \textbf{Stopband Nature} = Equiripple
+\end{itemize}
+
+\subsection{Bandstop Analog Filter Specifications using Bilinear Transformation}
+The Digital to Analog domain bilinear transformation is as follows:-
+
+\[\Omega = tan(\frac{\omega}{2})\]
+
+\noindent
+We will now use this bilinear transformation to get the corresponding frequencies in the Analog domain for the above frequencies in the digital domain.
+
+\begin{center}
+    \begin{tabular}{|c|c|}
+     \hline
+    $\omega$ & $\Omega$ \\ \hline
+    0.485$\pi$ & 0.953 \\ \hline
+    0.673$\pi$ & 1.772 \\ \hline
+    0.461$\pi$ & 0.885 \\ \hline
+    0.696$\pi$ & 1.936 \\ \hline
+    0 & 0 \\ \hline
+    $\pi$ & $\infty$ \\ \hline
+    \end{tabular}
+\end{center}
+
+\noindent
+
+Thus the specifications of the corresponding Analog filter of the same type are as follows:-
+
+\begin{itemize}
+    \item \textbf{Stopband} = 0.953 ($\Omega_{s1}$) to 1.772 ($\Omega_{s2}$)
+    \item \textbf{Transition Band} = 0.885 to 0.953 and 1.772 to 1.936
+    \item \textbf{Passband} = 0 to 0.885 and 1.936 to $\infty$
+    \item\textbf{Tolerance} = 0.15 in magnitude for both passband and stopband
+    \item \textbf{Passband Nature} = Equiripple
+    \item \textbf{Stopband Nature} = Equiripple
+\end{itemize}
+
+\subsection{Frequency Transformation to Analog Lowpass Filter Specifications}
+
+Now, that we have the specifications of the corresponding Analog Filter, we can use the frequency transformation to get the specifications of the corresponding Analog Lowpass filter which can then be designed in practice easily. The transformation we choose to use is given as follows:-
+
+\[\Omega_{L} = \frac{B\Omega}{\Omega_{0}^2 - \Omega^2}\]
+
+While calculating the 2 parameters \textbf{B} and \textbf{$\Omega_{0}$}, we choose to transform the stopband edges namely $\Omega_{p1}$ and $\Omega_{p2}$ to -1 and 1. Other frequencies then get mapped accordingly.
+
+\[\Omega_{0} = \sqrt{\Omega_{p1}\Omega_{p2}} = \sqrt{0.885*1.936} = 1.30889\]
+
+\[B = \Omega_{p2} - \Omega_{p1} = 1.936 - 0.885 = 1.0511\]
+
+\begin{center}
+    \begin{tabular}{|c|c|}
+     \hline
+    $\Omega$ & $\Omega_{L}$ \\ \hline
+    $0^+$ & $0^+$ \\ \hline
+    0.885 ($\Omega_{P1}$) & +1 ($\Omega_{LP1}$)\\ \hline
+    0.954 ($\Omega_{S1}$) & 1.2447 ($\Omega_{LS1}$) \\ \hline
+    1.30889 ($\Omega_{0}^-$) & $\infty$ \\ \hline
+    1.30889 ($\Omega_{0}^+$) & $-\infty$ \\ \hline
+    1.772 ($\Omega_{S2}$) & -1.305 ($\Omega_{LS2}$) \\ \hline
+    1.936 ($\Omega_{P2}$) & -1 ($\Omega_{LP2}$)\\ \hline
+    $\infty$ & $0^-$ \\ \hline
+    \end{tabular}
+\end{center}
+
+\subsection{Frequency Transformed Lowpass Analog Filter Specifications}
+
+\begin{itemize}
+    \item \textbf{Passband Edge} = 1 ($\Omega_{LP}$)
+    \item \textbf{Stopband Edge}= min($\Omega_{LS1}$,$\Omega_{LS2}$)= min(1.2447,1.305) = 1.2447 ($\Omega_{LS}$)
+    \item\textbf{Tolerance} = 0.15 in magnitude for both passband and stopband
+    \item \textbf{Passband Nature} = Equiripple
+    \item \textbf{Stopband Nature} = Equiripple
+\end{itemize}
+
+We need some additional terminology for the design of the \textbf{Elliptic Bandstop} filter which are noted as follows:- 
+
+
+\[H_{Analog,Passband,Min} = A_{p} = 1 - \delta = 1 - 0.15 = 0.85\]
+
+\[H_{Analog,Stopband,Max} = A_{s} = \delta = 0.15\]
+
+So, Now we calculate the ripple parameters $\epsilon_{p}$ and $\epsilon_{s}$ for the Elliptic Filter:-
+
+\[\epsilon_{p} = \sqrt{\frac{1}{A_{p}^2} - 1} = 0.61974\]
+
+\[\epsilon_{s} = \sqrt{\frac{1}{A_{s}^2} - 1} = 6.59124\]
+
+So we move ahead and calculate the Selectivity(\textbf{k}) and Discrimination(\textbf{k1}) parameters:-
+
+\[k = \frac{\Omega_{p}}{\Omega_{s}} = 0.80341\]
+\[k1 = \frac{\epsilon_{p}}{\epsilon_{p}} = 0.09402\]
+
+Now, we need to calculate \textbf{N}, the order of the Elliptic Filter. But in order to Calculate that we first need to solve the \textbf{Complete Elliptic Integral( K )} for 4 values namely \textbf{k, k', $k_{1}, k_{1}'$}
+such that;-
+
+\[k' = \sqrt{1 - k^{2}} = 0.59542\]
+\[k_{1}' = \sqrt{1 - k_{1}^{2}} = 0.99557\]
+
+The \textbf{Complete Elliptic Integral( K )} is as follows:-
+\[K(k) = \int_{0}^{\frac{\pi}{2}} \frac{1}{\sqrt{1 - k^{2}sin^{2}(\theta)}} \, d\theta \]\
+and we use the following Notation,
+\[K(k') = K'(k)\]
+
+\subsection{Finding the Order of Elliptic Bandstop Filter}
+
+We finally solve for \textbf{N}, the order of the Elliptic Bandstop Filter using the \textbf{Matlab} Built-in function \textbf{ellipk} to evaluate the \textbf{Complete Elliptic Integral(K)},
+\[N = \lceil {\frac{K(k)K(k_{1}')}{K(k')K(k_{1})}} \rceil = \lceil 2.7341 \rceil = 3\]
+
+But there is a problem, in order to get an Elliptic Bandpass Filter which satisfies the Given Specifications, it needs to satisfy the following condition called the \textbf{Degree Equation}, which it does for N = 2.7341 but not for N = 3 and thus we re-evaluate the value of \textbf{k} by keeping $k_{1}$ the same and using N = 3.
+
+\[N = \frac{K(k)K(k_{1}')}{K(k')K(k_{1})}\]
+
+We re-evaluate the value of \textbf{k} using the \textbf{Matlab} Built-in function \textbf{ellipdeg}. So the new value of \textbf{k} is \textbf{0.8571}
+
+We write N as:-
+\[N = 2L + r\]
+where \textbf{L} is the Number of Quadratic Factors in the Numerator and Denominator whereas \textbf{r} is the Number of Non-repeated Real poles of the Analog Lowpass Transfer Function.
+Thus we have,
+\[L = 1, r = 1\]
+
+
+\subsection{Zeroes and Poles of Analog Lowpass Transfer Function}
+
+The Analog Filter characteristic function $F_{N}(w)$ in Elliptic case is:-
+\[F_{N}(w) = cd(NuK_{1}, k1)\] where u is a Matrix of Scaling Factor that is defined as:-
+\[u_{i} = \frac{2i - 1}{N}, i = 1, 2,..., L\]
+So, the zeros of $F_{N}(w)$ will be at the following frequencies:-
+\[\zeta_{i} = cd(u_{i}K,k),  i = 1,2...,L\]
+
+We also need an additional parameter as given below for the calculations of poles of the transfer function:-
+\[\nu_{0} = \frac{-j}{N}sn^{-1}(\frac{j}{\epsilon_{p}},k_{1})\]
+
+So, now finally we are ready to evaluate the \textbf{zeros} and \textbf{poles} of the Analog Lowpass Transfer Function using the \textbf{Elliptic} Approximation,
+
+\[Z_{ai} = \Omega_{p}j(k\zeta_{i})^{-1}, i = 1,2,..,L\]
+\[P_{ai} = \Omega_{p}j cd((u_{i} - jv_{0})K,k), i = 1,2,..,L\]
+
+\[Z_{a1} = 1.2604i\]
+\[Z_{a2} = -1.2604i\]
+
+\[P_{a1} = -0.1153 + 0.9936i\]
+\[P_{a2} = -0.1153 - 0.9936i\]
+
+But in this case, as N is odd we have a linear factor of s in the Denominator of the Transfer Function (\textbf{a real pole})
+
+\[P_{a0} = \Omega_{p}jcd((1 - jv_{0})K,k) = \Omega_{p}jsn(jv_{0}K,k)\]
+
+\[P_{a0} = -0.6232\]
+
+\[H_{analog,LPF}(s_{L}) = \frac{(0.6295s_{L}^{2} + 1)}{(1.6047s_{L} + 1)(0.9994s_{L}^{2} + 0.2305s_{L} + 1)}\]
+
+\subsection{Analog Bandstop Transfer Function}
+
+Now we need to transform the Analog Lowpass Filter back to the Analog Bandstop Filter using the same transformation we used earlier.
+\[s_{L} = \frac{\Omega_{0}^2 + s^2}{Bs}\]
+Thus
+\[s_{L} = \frac{1.0511s}{1.71319 + s^2}\]
+
+Substituting this value of $s_{L}$ into the above Analog Lowpass Filter Tranfer Function, we get the Analog Bandstop Filter Transfer function i.e \textbf{$H_{analog,BSF}(s)$}. As it is a Rational Transfer function, we can write \textbf{2 series} in Numerator and Denominator where the coefficients of different degrees of \textbf{s} are as follows:-
+
+\begin{table}[H]
+  \begin{minipage}{.5\linewidth}
+    \centering
+    \begin{tabular}{ |c|c| }
+      \toprule
+      \makecell{Powers of s \\ in Denominator} & \makecell{Coefficients} \\
+      \midrule
+      $s^{6}$ & 1 \\
+      $s^{5}$ & 1.9291 \\
+      $s^{4}$ & 6.6525 \\
+      $s^{3}$ & 8.4722 \\
+      $s^{2}$ & 11.3970 \\
+      $s^{1}$ & 5.6619 \\
+      $s^{0}$ & 5.0283 \\
+      \bottomrule
+    \end{tabular}
+  \end{minipage}%
+  \begin{minipage}{.5\linewidth}
+    \centering
+    \begin{tabular}{ |c|c| }
+      \toprule
+      \makecell{Powers of s \\ in Numerator} & \makecell{Coefficients} \\
+      \midrule
+      $s^{6}$ & 1 \\
+      $s^{4}$ & 5.8350 \\
+      $s^{2}$ & 9.9966 \\
+      $s^{0}$ & 5.0283 \\
+      \bottomrule
+    \end{tabular}
+  \end{minipage}
+\end{table}
+
+\subsection{Discrete Time Filter Transfer Function}
+Finally, to transform the Analog Bandstop Transfer Function into the Discrete Bandstop Transfer Function with \textbf{Elliptic} Approximation, we need to make use of the Bilinear Transformation which is given as:-
+\[s = \frac{1 - z^{-1}}{1 + z^{-1}}\]
+
+Substituting the above equation in the Analog Bandstop Filter Transfer Function we get $H_{Digital,BSF}(z)$. It can be written in the form
+N(z)/D(z) where the coefficients of the polynomials N(z) and D(z) are given as follows:-
+
+\begin{table}[H]
+  \begin{minipage}{.5\linewidth}
+    \centering
+    \begin{tabular}{ |c|c| }
+      \toprule
+      \makecell{Powers of $z^{-1}$ \\ in Numerator} & \makecell{Coefficients} \\
+      \midrule
+      $z^{-6}$ & 0.5446 \\
+      $z^{-5}$ & 0.8095 \\
+      $z^{-4}$ & 1.8583 \\
+      $z^{-3}$ & 1.5924 \\
+      $z^{-2}$ & 1.8583 \\
+      $z^{-1}$ & 0.8095 \\
+      $z^{0}$ & 0.5446 \\
+      \bottomrule
+    \end{tabular}
+  \end{minipage}%
+  \begin{minipage}{.5\linewidth}
+    \centering
+    \begin{tabular}{ |c|c| }
+      \toprule
+      \makecell{Powers of $z^{-1}$ \\ in Denominator} & \makecell{Coefficients} \\
+      \midrule
+      $z^{-6}$ & 0.1997 \\
+      $z^{-5}$ & 0.4665 \\
+      $z^{-4}$ & 1.4907 \\
+      $z^{-3}$ & 1.5343 \\
+      $z^{-2}$ & 2.1154 \\
+      $z^{-1}$ & 1.2105 \\
+      $z^{0}$ & 1 \\
+      \bottomrule
+    \end{tabular}
+  \end{minipage}
+\end{table}
+
+\subsection{ Plots of Magnitude Response and Phase Response of the Elliptic Bandstop Filter}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width =\textwidth, height=8cm]{11.png}
+    \caption{Magntitude Response of the Filter in Frequency}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width =\textwidth, height=8cm]{12.png}
+    \caption{Magnitude Response of the Filter in Normalized Frequency}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width =\textwidth, height=10cm]{13.png}
+    \caption{Phase response of the Filter}
+\end{figure}
+
+\section{Comparing Elliptic filter design with Butterworth, Chebyschev and FIR}
+Elliptic filters have the most non-linear phase response(worst) among the 3 IIR filters whereas it has the best magnitude response with the sharpest transition band. We can thus see that there is a tradeoff between the quality of Magnitude reponse(sharpness of the transition band for given amount of resources) and the quality of phase response in IIR Filters. The elliptic filter has the least order \textbf{N} among the 3 IIR Filters and thus is the most economical in terms of resource consumption. It can be noted that the computation required to compute various coefficients in the transfer function is highest in the case of Elliptic Filters. FIR Filter is much different than any of the IIR filters where there is much more flexibility in choosing the order as well as the kind of \textbf{window function.} The computation required to get transfer functions with appropriately low Tolerances in FIR filters is quite large because we need to choose some very complex window functions for this purpose. It can be noted that even the FIR filters have a decently linear phase response, much better than that of the Elliptic Filter. One of the disadvantages of the Elliptic filter though is it has ripples in both the stopband and passband, unlike the other 2 IIR Filters. One major advantage of the Elliptic filter over the other 2 IIR filters is that it has zeros in its transfer function and thus we can notch out frequencies in the passband.
+
+\end{document}
